@@ -1,155 +1,68 @@
-import React from "react";
+import React, { useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { decrement, increment } from "../store/entrySlice";
 
-function HomePage() {
-  return <div>HomePage</div>;
+export function HomePage() {
+  const count = useSelector((state) => state.entry.value);
+  const entries = useSelector((state) => state.entry.entries);
+  const dispatch = useDispatch();
+  const typeRef = useRef();
+  const amountRef = useRef();
+
+  function handleAddEntry() {
+    dispatch(
+      increment({
+        ID: "id" + new Date().getTime() + "username/email",
+        type: typeRef.current.value,
+        amount: amountRef.current.value,
+        // createdAt: new Date().toString(),
+        createdAt: new Date().toDateString(),
+      })
+    );
+    // console.log("Current entries after adding:", entries);
+  }
+  function handleRemoveEntry(entryID) {
+    dispatch(decrement(entryID));
+  }
+
+  return (
+    <div className="pt-10">
+      <div>
+        <label>Type: </label>
+        <input
+          ref={typeRef}
+          type="text"
+          className="bg-stone-100 underline-offset-1 rounded-md"
+        />
+        <label>Amount: </label>
+        <input
+          ref={amountRef}
+          type="number"
+          className="bg-stone-100 underline-offset-1 rounded-md"
+        />
+        <button aria-label="Add entry" onClick={handleAddEntry}>
+          Add Entry
+        </button>
+      </div>
+      <div>
+        <span>Count: {count}</span>
+        <ul>
+          {entries.map((entry, index) => (
+            <li key={index}>
+              {entry.ID} ---- {entry.amount} -- {entry.type} --{" "}
+              {entry.createdAt}
+              <button
+                onClick={() => handleRemoveEntry(entry.ID)} // Pass the entry ID to remove
+                style={{ marginLeft: "10px", color: "red" }}
+              >
+                Delete
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
 }
 
 export default HomePage;
-// import React, { useEffect, useState } from "react";
-// import {
-//   collection,
-//   addDoc,
-//   doc,
-//   updateDoc,
-//   arrayUnion,
-//   getDocs, // Import getDocs
-//   query, // Import query
-//   where, // Import where
-// } from "firebase/firestore";
-// import { db } from "../firebase";
-
-// function HomePage() {
-//   const [userDocId, setUserDocId] = useState(localStorage.getItem("userDocId")); // Get from local storage
-
-//   useEffect(() => {
-//     if (userDocId) {
-//       return;
-//     }
-
-//     const createUserDocument = async () => {
-//       try {
-//         const usersCollection = collection(db, "userDB");
-//         const q = query(
-//           usersCollection,
-//           where("uid", "==", /* the user's uid */ "")
-//         ); // replace with actual user id
-//         const querySnapshot = await getDocs(q);
-//         if (querySnapshot.empty) {
-//           const newUserDocRef = await addDoc(usersCollection, {
-//             entries: [], // Initialize with an empty array
-//           });
-//           localStorage.setItem("userDocId", newUserDocRef.id);
-//           setUserDocId(newUserDocRef.id);
-//           console.log("New user document created with ID:", newUserDocRef.id);
-//         } else {
-//           querySnapshot.forEach((doc) => {
-//             localStorage.setItem("userDocId", doc.id);
-//             setUserDocId(doc.id);
-//             console.log("Existing user document ID:", doc.id);
-//           });
-//         }
-//       } catch (error) {
-//         console.error("Error creating/fetching user document:", error);
-//       }
-//     };
-
-//     createUserDocument();
-//   }, []);
-
-//   const addEntryToDocument = async (newEntry) => {
-//     if (!userDocId) {
-//       console.error("User document ID not found. Cannot add entry.");
-//       return; // or handle this case appropriately (e.g., show a message)
-//     }
-
-//     try {
-//       const docRef = doc(db, "userDB", userDocId); // Use userDocId from state
-
-//       await updateDoc(docRef, {
-//         entries: arrayUnion(newEntry),
-//       });
-
-//       console.log("Entry successfully added to document!");
-//     } catch (error) {
-//       console.error("Error adding entry:", error);
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <h2>HomePage Data</h2>
-//       <button
-//         type="button"
-//         className="border rounded-md bg-stone-100 hover:bg-stone-200"
-//         onClick={() =>
-//           addEntryToDocument({
-//             amount: 1500,
-//             createdAT: new Date(),
-//             type: "INCOME",
-//           })
-//         }
-//       >
-//         add data to firestore
-//       </button>
-//     </div>
-//   );
-// }
-
-// export default HomePage;
-
-// import React from "react";
-// import {
-//   collection,
-//   addDoc,
-//   doc,
-//   updateDoc,
-//   arrayUnion,
-// } from "firebase/firestore";
-// import { db } from "../firebase";
-// function HomePage() {
-//   //   const addData = async (data) => {
-//   //     try {
-//   //       //       const collectionRef = collection(db, "userDB");
-//   //       const collectionRef = collection(db, "userDB", "57xhDMToRTo4FL8I3Hxj");
-//   //       const docRef = await addDoc(collectionRef, data);
-//   //       console.log("Document written with ID:", docRef.id);
-//   //     } catch (error) {
-//   //       console.error("Error adding document:", error);
-//   //     }
-//   //   };
-//   const addEntryToDocument = async (newEntry) => {
-//     try {
-//       const docRef = doc(db, "userDB", "57xhDMToRTo4FL8I3Hxj");
-
-//       // Add the new entry to the 'entries' array using arrayUnion
-//       await updateDoc(docRef, {
-//         entries: arrayUnion(newEntry),
-//       });
-
-//       console.log("Entry successfully added to document!");
-//     } catch (error) {
-//       console.error("Error adding entry:", error);
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <h2>HomePage Data</h2>
-//       <button
-//         type="button"
-//         className="border rounded-md bg-stone-100 hover:bg-stone-200"
-//         onClick={() =>
-//           addEntryToDocument({
-//             amount: 1500,
-//             createdAT: new Date(),
-//             type: "INCOME",
-//           })
-//         }
-//       >
-//         add data to firestore
-//       </button>
-//     </div>
-//   );
-// }
-
-// export default HomePage;

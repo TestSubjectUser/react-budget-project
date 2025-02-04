@@ -1,12 +1,13 @@
-import { createBrowserRouter, RouterProvider } from "react-router"; // Import from react-router-dom
+import { createBrowserRouter, RouterProvider } from "react-router";
 import "./App.css";
 import HomePage from "./components/HomePage";
 import RootLayout from "./components/RootLayout";
 import PrevEntries from "./components/PrevEntries";
+import store from "./store/store";
+import { Provider } from "react-redux";
 
 function App() {
   const router = createBrowserRouter([
-    // Moved router definition inside the component
     {
       path: "/",
       element: <RootLayout />,
@@ -17,16 +18,16 @@ function App() {
         },
         {
           path: "/entries",
-          element: <PrevEntries />, // Conditional rendering
+          element: <PrevEntries />,
         },
       ],
     },
   ]);
 
   return (
-    <div>
+    <Provider store={store}>
       <RouterProvider router={router} />
-    </div>
+    </Provider>
   );
 }
 
