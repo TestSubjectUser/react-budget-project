@@ -9,6 +9,8 @@ import { Provider } from "react-redux";
 import { ThemeContextProvider } from "./context/ThemeContext";
 import CounterApp from "./components/CounterApp";
 import ErrorBoundary from "./components/ErrorBoundary";
+import { dataLoader } from "./components/loaders/dataLoader";
+import { action } from "./components/actions/action";
 const App = () => {
   const router = createBrowserRouter([
     {
@@ -28,6 +30,8 @@ const App = () => {
         {
           path: "/entries",
           element: <PrevEntries />,
+          loader: dataLoader,
+          action: action,
         },
         {
           path: "/counter",
