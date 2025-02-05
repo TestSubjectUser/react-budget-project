@@ -39,6 +39,13 @@ function SideNav() {
         >
           - All Entries
         </NavLink>
+        <NavLink
+          to="/counter"
+          className="pl-5 text-blue-300 hover:text-blue-600"
+          end
+        >
+          - Counter
+        </NavLink>
         <ThemeToggle />
         <br></br>
         <br></br>
