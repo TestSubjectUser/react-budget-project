@@ -3,7 +3,7 @@ import React, { useState, useCallback } from "react";
 import Counter from "./Counter";
 
 const CounterApp = () => {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = 0;
 
   const resetCount = useCallback(() => {
     setCount(0);
