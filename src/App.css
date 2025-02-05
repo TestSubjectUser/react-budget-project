@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
-* Light Theme */ body.light {
+/* Light Theme */
+body.light {
   background-color: white;
   color: black;
 }

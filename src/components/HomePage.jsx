@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { decrement, increment } from "../store/entrySlice";
+import Button from "./Button";
 
 export function HomePage() {
   const count = useSelector((state) => state.entry.value);
@@ -40,9 +41,9 @@ export function HomePage() {
           type="number"
           className="bg-stone-100 underline-offset-1 rounded-md"
         />
-        <button aria-label="Add entry" onClick={handleAddEntry}>
+        <Button aria-label="Add entry" onClick={handleAddEntry}>
           Add Entry
-        </button>
+        </Button>
       </div>
       <div>
         <span>Count: {count}</span>

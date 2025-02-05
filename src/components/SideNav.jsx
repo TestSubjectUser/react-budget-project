@@ -1,12 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setTheme } from "../store/themeSlice";
 import { NavLink } from "react-router";
 import ThemeToggle from "./ThemeToggle";
+import { useTheme } from "../context/ThemeContext";
 
 function SideNav() {
   const dispatch = useDispatch();
   const theme = useSelector((state) => state.theme.theme);
+
+  const { themeState, switchTheme } = useTheme();
+  // const { themeState, switchTheme } = useContext(ThemeContext);
+  console.log("Current theme: ", themeState);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
@@ -35,6 +40,11 @@ function SideNav() {
           - All Entries
         </NavLink>
         <ThemeToggle />
+        <br></br>
+        <br></br>
+        // with use context
+        <p>Current Theme: {themeState}</p>
+        <button onClick={switchTheme}>Toggle Theme</button>
       </div>
     </div>
   );

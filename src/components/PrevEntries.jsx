@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 
 import { useSelector, useDispatch } from "react-redux";
 import { addTask, removeTask } from "../store/taskSlice";
+import Button from "./Button";
 
 function PrevEntries() {
   const dispatch = useDispatch();
@@ -25,9 +26,9 @@ function PrevEntries() {
           type="text"
           className="bg-stone-100 underline-offset-1 rounded-md"
         />
-        <button aria-label="Add entry" onClick={handleAddTask}>
+        <Button aria-label="Add entry" onClick={handleAddTask}>
           Add task
-        </button>
+        </Button>
         <div>
           <ul>
             {tasks.map((task, index) => (
